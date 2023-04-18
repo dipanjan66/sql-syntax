@@ -1,0 +1,512 @@
+#SQL Create Database:- Syntax
+
+create database edureka
+
+#—-------------------------------------------------------------
+#Delete Database:- Syntax
+
+drop database edureka
+
+#—---------------------------------------------------------------
+
+#CREATE Table:- Syntax
+
+CREATE TABLE table_name (
+	column1 datatype,
+	column2 datatype,
+	column3 datatype,
+   ....
+);
+
+OR
+
+CREATE TABLE table_name (
+	column1 datatype column_constraint,
+	column2 datatype column_constraint,
+	column3 datatype column_constraint,
+     table_constraint
+   ....
+)INHERIT existing_table_name;
+
+
+
+#===>  Primary key is Unique and Not Null means, there has to be some value. Serial means, number will fill automatically.
+
+create table account(
+user_id SERIAL PRIMARY KEY,
+username varchar(50) UNIQUE not null,
+password varchar(50) not null,
+email varchar(250) UNIQUE not null,
+created_on TIMESTAMP not null,
+last_login TIMESTAMP
+);
+
+#===> user_id column should be the same to the user_id column of account Table. User_id is a Foreign Key.
+
+create table account_job(
+user_id INTEGER REFERENCES account(user_id),
+hire_date TIMESTAMP
+);
+	
+#—------------------------------------------
+#DROP TABLE
+
+DROP TABLE table_name;
+
+#—---------------------------------------
+
+#Select:- Syntax
+
+SELECT column1, column2, ...
+FROM table_name;
+
+
+OR
+
+ To select all the fields available in the table:-
+
+SELECT * FROM table_name;
+
+⇒
+select first_name, last_name, email from customer;
+
+#—----------------------------------------------
+#SELECT DISTINCT Syntax - Used to get Unique Value in Column (To Remove Duplicate)
+
+SELECT DISTINCT column1, column2, ...
+FROM table_name;
+
+⇒
+select DISTINCT release_year from film;
+#—----------------------------------------------
+
+#Insert Into:- Syntax
+
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES 
+(value1, value2, value3, ...)
+(value1, value2, value3, ...)
+;
+
+OR
+
+INSERT INTO table_name
+VALUES 
+(value1, value2, value3, ...)
+(value1, value2, value3, ...)
+;
+
+#===> user_id will fill automatically serial wise
+
+insert into account(username, password, email, created_on)
+values
+('jose', 'password', 'jose@gmail.com', current_timestamp),
+('mally', 'password66', 'mally@gmail.com', current_timestamp)
+
+#—---------------------------------------------
+
+COUNT() Syntax
+SELECT COUNT(column_name)
+FROM table_name
+WHERE condition;
+
+
+⇒ How many Rows in the Table
+select COUNT (*) from payment;  
+
+⇒ How many Rows in amount Column.
+select COUNT (amount) from payment; 
+
+====> Count How many Unique Row in amount Column 
+select COUNT(DISTINCT amount) from payment;
+
+#—---------------------------------------------
+
+#WHERE Syntax
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+===> Information about Linda
+select * from customer
+where first_name = 'Linda';
+
+—---------------------------------------------------
+#ORDER BY Syntax
+#The ORDER BY keyword is used to sort the result-set in ascending or descending order.
+
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC;
+
+===> Ascending Order
+select * from customer
+ORDER BY first_name asc;
+
+===> Descending Order
+select * from customer
+ORDER BY first_name desc;
+#—--------------------------------------------------
+#LIMIT
+
+#It Limit the Number of Row
+
+SELECT * FROM Customers
+LIMIT 3;
+
+===> Limit 5 ⇒ Mean It will give 5 Rows
+select * from payment
+order by payment_date asc
+LIMIT 5;
+
+#—----------------------------------------------------
+#Aggregate Function:-
+
+AVG()
+COUNT()
+MIN()
+MAX()
+SUM()
+
+#—-------------------------------------------------------
+
+#AVG() Syntax
+
+SELECT AVG(column_name)
+FROM table_name
+WHERE condition;
+
+#===>Including ROUND function which take 2 Decimal Value
+
+select ROUND(avg(replacement_cost), 2) from film;
+#—--------------------------------------
+#SUM() Syntax
+
+SELECT SUM(column_name)
+FROM table_name
+WHERE condition;
+
+===>
+select SUM(replacement_cost) from film;
+#—-------------------------------------
+#MIN() Syntax
+
+SELECT MIN(column_name)
+FROM table_name
+WHERE condition;
+
+===> replacement_cost  is a Column
+
+select min(replacement_cost) from film;
+#—-------------------------------------------
+
+#MAX() Syntax
+
+SELECT MAX(column_name)
+FROM table_name
+WHERE condition;
+
+===>
+select max(replacement_cost) from film;
+#—------------------------------------------------------------------------------------------------
+#GROUP BY Syntax
+
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+ORDER BY column_name(s);
+
+===>
+select customer_id, SUM(amount) from payment
+group by customer_id
+order by SUM(amount) DESC
+
+#—--------------------------------------------
+
+#HAVING Syntax
+
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+HAVING condition
+ORDER BY column_name(s);
+
+===>
+select customer_id, SUM(amount) from payment
+group by customer_id
+having SUM(amount) > 100
+
+#—----------------------------------------------------
+#Null Syntax
+
+Select Column_name1, Column_name2
+From table_name
+Where column_name is null
+#—------------------------------------------------------------------------------------------------
+#Not Null Syntax
+
+Select Column_name1, Column_name2
+From table_name
+Where column_name is not null
+
+#—------------------------------------------------------------------------------------------------
+#UPDATE Syntax
+
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+=>
+update student
+set City = 'Tripura'
+where StudentID = 1
+#—------------------------------------------------------------------------------------------------
+
+#DELETE Syntax ⇒ Remove Row from Table
+#DELETE FROM table_name WHERE condition;
+
+=>
+delete from student
+where City = 'Bari'
+#—----------------------------------------------------
+#ALTER TABLE - ADD Column
+
+#===> To add a column in a table
+
+ALTER TABLE table_name
+ADD column_name datatype;
+
+
+#ALTER TABLE - DROP COLUMN
+
+ALTER TABLE table_name
+DROP COLUMN column_name;
+
+#ALTER TABLE - RENAME COLUMN
+
+ALTER TABLE table_name
+RENAME COLUMN old_name to new_name;
+
+#—-------------------------------------------------------
+
+#IN Syntax (Operator)
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IN (value1, value2, ...);
+
+=>
+select StudentID, Fname, Lname
+from student
+where City in ('Tripura', 'Rachi', 'Kolkata', 'Falakata');
+#—------------------------------------------------------------------
+#BETWEEN Syntax (Operator)
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name BETWEEN value1 AND value2;
+
+=>
+select StudentID, Fname, Lname, Marks
+from student
+where Marks between 500 and 800;
+
+===> amount is a Column
+select * from payment
+where amount BETWEEN 8 and 9   
+
+#—-----------------------------------------------------
+
+#SQL Column Aliases => Rename
+
+#SQL aliases are used to give a table, or a column in a table, a temporary name.
+
+SELECT column_name AS alias_name
+FROM table_name;
+
+⇒
+select StudentID as id from student
+#—------------------------------------------------------------------------------------------------
+#SQL Table Aliases => Rename
+
+SELECT column_name(s)
+FROM table_name as alias_name;
+
+⇒
+select S.Fname, S.Lname
+from student as S;
+#—------------------------------------------------------------------------------------------------
+#SQL Operators
+
+⇒
+select * from student where Marks > 500;
+
+#—------------------------------------------------------------------------------------------------
+
+#LIKE Syntax
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE columnN LIKE ‘c%’;  =====> Start with c
+
+===> LIKE is Case Sensitive
+
+===> ILIKE is not Case Sensitive
+
+⇒ Fname is a Column Name
+select * from student where Fname like 'a%';  ⇒ Start with a
+
+OR⇒
+
+select * from student where Fname like '%a'; ===> End with a
+
+OR⇒
+select * from student where Fname like '%a%'; ==> a can be anywhere
+
+
+OR⇒
+select * from student where Fname like 'n%i;  ===> Start with n and End with i
+
+#—------------------------------------------------------------------------------------------------
+
+#CASE Syntax - (Like if else Statement)
+
+
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END;
+
+⇒
+select case(City)
+when 'Tripura' then 'TP'
+when 'Kolkata' then 'KK'
+else 'No Idea'
+end
+from student
+#—-----------------------------------------------
+
+#INNER JOIN
+
+Select * from Table A
+INNER JOIN Table B
+ON Table A.column_match = Table B.column_match
+
+===>
+Select * from Registration
+INNER JOIN Logins
+ON Registration.name = Logins.name
+
+===>
+select * from payment
+INNER JOIN customer
+ON payment.customer_id = customer.customer_id
+
+===>Show only 3 Column
+
+select payment_id, payment.customer_id, first_name
+from payment
+INNER JOIN customer
+ON payment.customer_id = customer.customer_id
+
+#—--------------------------------------------------------------------------
+
+#Full Outer JOIN
+
+Select * from Table A
+FULL OUTER JOIN Table B
+ON Table A.column_match = Table B.column_match
+
+===> For Privacy Policy
+
+select * from customer
+FULL OUTER JOIN payment
+ON customer.customer_id = payment.customer_id
+WHERE customer.customer_id IS null
+OR payment.payment_id IS null
+#—------------------------------------------------------------------------
+
+#Left JOIN or Left Outer Join
+
+Select * from Table A
+LEFT OUTER JOIN Table B
+ON Table A.column_match = Table B.column_match
+
+===>Fetch Data from Registration Table which is common
+Select * from Registration
+LEFT OUTER JOIN Logins
+ON Registration.name = Logins.name
+#—----------------------------------------------------------------------------
+
+#Right JOIN
+
+Select * from Table A
+RIGHT OUTER JOIN Table B
+ON Table A.column_match = Table B.column_match
+#—----------------------------------------------------------------------------
+#UNION
+
+Select column name(s) from Table 1
+UNION
+Select column name(s) from Table 2;
+
+#—---------------------------------------------------------
+#Show Timezone
+
+show timezone
+#—------------------------------------------------------
+#Select Now
+
+select now()     ====> Show Current Time and Date
+
+#—----------------------------------------------------------
+
+Select TimeofDay
+select timeofday()     ===> Time with Date Name
+
+#—----------------------------------------------------------
+#Current_Time
+
+select current_time
+
+#—--------------------------------------------------------------
+#Current_Date
+
+select current_date
+
+#—-------------------------------------------------------------------
+#Extract
+
+Extract (year from date_col)
+
+===> Extract all the Year
+select EXTRACT(year from payment_date) from payment
+
+#—--------------------------------------------------------------------
+#Age
+
+===> payment_date is a Column
+select age(payment_date) from payment
+
+#—---------------------------------------------------------------
+#To_Char
+
+===> Convert One Data type to Text Data Type
+select TO_CHAR(payment_date, 'DAY-MONTH-YYYY') from payment
+
+===>
+select TO_CHAR(payment_date, 'MONTH-YYYY') from payment
+
+===>
+select TO_CHAR(payment_date, 'DD/MON/YYYY') from payment
+
+===>
+select TO_CHAR(payment_date, 'MON/DD/YYYY') from payment
+
+===>
+select TO_CHAR(payment_date, 'DD/MM/YYYY') from payment
